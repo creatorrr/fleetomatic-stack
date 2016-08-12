@@ -1,0 +1,30 @@
+version: '2'
+services:
+  influxdb:
+    image: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+
+    volumes:
+      - ./data:/var/lib/influxdb
+
+    depends_on:
+      - telegraf
+      - chronograf
+      - kapacitor
+
+  telegraf:
+    image: telegraf
+
+  chronograf:
+    image: chronograf
+
+  kapacitor:
+    image: kapacitor
+
+  grafana:
+    image: grafana/grafana
+
+  mosquitto:
+    image: ansi/mosquitto
