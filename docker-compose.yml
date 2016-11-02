@@ -8,22 +8,22 @@ services:
       - "8094:8094"
 
     volumes:
-      - $PWD/telegraf.conf:/etc/telegraf/telegraf.conf
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
 
     depends_on:
       - influxdb
-      - mosquitto
+      # - mosquitto
 
-  mosquitto:
-    image: ansi/mosquitto
-    ports:
-      - "1883:1883"
+  # mosquitto:
+  #   image: ansi/mosquitto
+  #   ports:
+  #     - "1883:1883"
 
-    command: /usr/local/sbin/mosquitto -v -c /etc/mosquitto/mosquitto.conf
+  #   command: /usr/local/sbin/mosquitto -v -c /etc/mosquitto/mosquitto.conf
 
-    volumes:
-      - $PWD/mosquitto.conf:/etc/mosquitto/mosquitto.conf
-      - $PWD/data:/home/mosquitto/data
+  #   volumes:
+  #     - ./mosquitto.conf:/etc/mosquitto/mosquitto.conf
+  #     - ./data:/home/mosquitto/data
 
   influxdb:
     image: influxdb
@@ -32,8 +32,10 @@ services:
       - "8086:8086"
 
     volumes:
-      - $PWD/data:/var/lib/influxdb/data
-      - $PWD/influxdb.conf:/etc/influxdb/influxdb.conf
+      - ./influxdb.conf:/home/influxdb.conf
+      - ./data:/var/lib/influxdb/data
+
+    command: influxd -config /home/influxdb.conf
 
     depends_on:
       - chronograf
